@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="F0x-uL-lxw">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="5hd-8E-013">
+            <objects>
+                <navigationController id="F0x-uL-lxw" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="I7o-Dn-gfW">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.1843137255" green="0.47058823529999999" blue="0.56078431370000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="DINNextLTArabic-Regular" family="DIN Next LT Arabic" pointSize="0.0"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Rcl-Wc-ils" kind="relationship" relationship="rootViewController" id="0KB-cg-aF7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dJd-I5-e0j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-78" y="354"/>
+        </scene>
+        <!--Starting View Controller-->
+        <scene sceneID="TRf-JB-XEW">
+            <objects>
+                <viewController id="Rcl-Wc-ils" customClass="StartingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="d5V-dM-We0"/>
+                        <viewControllerLayoutGuide type="bottom" id="yKm-c6-i73"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Aau-3c-lSN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="starup-bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="9cj-Iz-dRe">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zua-zb-AK1">
+                                <rect key="frame" x="66" y="203" width="188" height="55"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="188" id="f9d-Sd-eFX"/>
+                                    <constraint firstAttribute="height" constant="55" id="kFM-KP-zHW"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="Zua-zb-AK1" secondAttribute="centerX" id="2Cg-8t-1sH"/>
+                            <constraint firstItem="9cj-Iz-dRe" firstAttribute="top" secondItem="d5V-dM-We0" secondAttribute="bottom" constant="-20" id="DUA-xA-9WN"/>
+                            <constraint firstItem="yKm-c6-i73" firstAttribute="top" secondItem="9cj-Iz-dRe" secondAttribute="bottom" id="Smy-aB-OcU"/>
+                            <constraint firstAttribute="centerY" secondItem="Zua-zb-AK1" secondAttribute="centerY" constant="53.5" id="iTM-NI-pOp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9cj-Iz-dRe" secondAttribute="trailing" constant="-16" id="uA7-SH-cD9"/>
+                            <constraint firstItem="9cj-Iz-dRe" firstAttribute="leading" secondItem="Aau-3c-lSN" secondAttribute="leadingMargin" constant="-16" id="yji-95-sVW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="zqD-h4-FEr"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fea-M2-n8J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="363" y="354"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo.png" width="410" height="121"/>
+        <image name="starup-bg.png" width="640" height="1089"/>
+    </resources>
+</document>

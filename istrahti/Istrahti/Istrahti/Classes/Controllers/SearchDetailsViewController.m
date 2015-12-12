@@ -14,37 +14,46 @@
 {
    __block IstrahtyModel *model;
 }
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UILabel *istrahaNoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *istrahaNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *istrahaPhone;
+@property (weak, nonatomic) IBOutlet UILabel *istrahaDetailsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+
+@property (weak, nonatomic) IBOutlet HCSStarRatingView *rateView;
+@property (weak, nonatomic) IBOutlet iCarousel *carousel;
+@property (weak, nonatomic) IBOutlet JOLImageSlider *slider;
+
 @end
 
 @implementation SearchDetailsViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self loadData];
-    self.carousel.type = iCarouselTypeLinear;
-    UIButton *_backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 0, 14, 22);
-    [_backBtn setBackgroundImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
-    [_backBtn setHighlighted:NO];
-    [_backBtn addTarget:self action:@selector(popViewController:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_backBtn];
-    self.istrahaPhone.layer.borderWidth = 1;
-    self.istrahaPhone.layer.cornerRadius= 10;
-    self.istrahaPhone.layer.masksToBounds = YES;
-    self.istrahaPhone.layer.borderColor = [[UIColor clearColor] CGColor];
-
-
-}
-- (void)popViewController:(id)sender
+- (void)viewDidLoad
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [super viewDidLoad];
+
+    [self configureUI];
+    
+    [self loadData];
 }
--(void)loadData{
+
+- (void)configureUI
+{
+    self.carousel.type = iCarouselTypeLinear;
+    
+    [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JFFlat-Regular" size:13.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+}
+
+-(void)loadData
+{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     [hud setLabelText:@""];
     
-    [[WebDataRepository sharedInstance]getCategories:self.idstring :^(id result) {
+    [[WebDataRepository sharedInstance]getCategories:self.istrahaID :^(id result) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
 
         NSDictionary *dic =result;
@@ -57,14 +66,16 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
--(void)setViews{
+
+- (void)setViews
+{
     NSMutableArray *slideSet = [[NSMutableArray alloc]init];
-    for (NSString *imageURL in model.imagesArray) {
+    for (NSString *imageURL in model.imagesArray)
+    {
         JOLImageSlide *slide = [[JOLImageSlide alloc] init];
         slide.image = imageURL;
         [slideSet addObject:slide];
     }
-    
 
     self.slider.slideArray = slideSet;
 
@@ -83,13 +94,13 @@
     self.rateView.value = [model.rating floatValue];
     self.priceLabel.text = [NSString stringWithFormat:@"ر.س %@",model.price];
     self.cityLabel.text = model.city;
-    self.istrahaNoLabel.text = [NSString stringWithFormat:@"رقم الاستراحه %@",self.idstring];
-}
-- (void) imagePager:(JOLImageSlider *)imagePager didSelectImageAtIndex:(NSUInteger)index {
-
+    self.istrahaNoLabel.text = [NSString stringWithFormat:@"رقم الاستراحه %@",self.istrahaID];
 }
 
+- (void) imagePager:(JOLImageSlider *)imagePager didSelectImageAtIndex:(NSUInteger)index
+{
 
+}
 
 #pragma mark -
 #pragma mark iCarousel methods
@@ -99,35 +110,39 @@
     return model.imagesArray.count;
 }
 
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view  {
-    
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
+{
     UIImageView *carouselView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
     [carouselView setImageURL:[NSURL URLWithString:[model.imagesArray objectAtIndex:index]]];
     [carouselView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleHeight |UIViewAutoresizingFlexibleBottomMargin ];
     return carouselView;
 }
 
--(CGFloat)carouselItemWidth:(iCarousel *)carousel {
-    
+- (CGFloat)carouselItemWidth:(iCarousel *)carousel
+{
     return 70;
 }
 
-- (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index{
+- (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
+{
     
 //    [self goToPostView:[catArr objectAtIndex:index]];
     
 }
-- (void)didReceiveMemoryWarning {
+
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)forwardAction:(id)sender {
+- (IBAction)forwardAction:(id)sender
+{
     self.carousel.currentItemIndex++;
-
 }
-- (IBAction)backAction:(id)sender {
-    self.carousel.currentItemIndex--;
 
+- (IBAction)backAction:(id)sender
+{
+    self.carousel.currentItemIndex--;
 }
 @end

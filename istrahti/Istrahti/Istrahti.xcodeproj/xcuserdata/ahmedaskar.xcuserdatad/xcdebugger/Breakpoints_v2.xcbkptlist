@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Istrahti/Classes/Controllers/ResultViewController.m"
-            timestampString = "463834387.626124"
+            timestampString = "471656650.198779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "931"
-            endingLineNumber = "931"
+            startingLineNumber = "924"
+            endingLineNumber = "924"
             landmarkName = "-advancedSearchAction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Istrahti/Classes/Controllers/ResultViewController.m"
-            timestampString = "463834387.626124"
+            timestampString = "471656650.198779"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1024"
-            endingLineNumber = "1024"
+            startingLineNumber = "1017"
+            endingLineNumber = "1017"
             landmarkName = "-advancedSearchAction:"
             landmarkType = "5">
          </BreakpointContent>

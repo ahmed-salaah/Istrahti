@@ -8,6 +8,7 @@
 
 #import "SideMenuViewController.h"
 #import "SideMenuViewCell.h"
+#import "AboutViewController.h"
 
 @interface SideMenuViewController ()
 {
@@ -36,7 +37,7 @@
 
 - (IBAction)deleteSearch:(id)sender
 {
-
+    
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -67,12 +68,12 @@
         case 0:
             cell.icon.image = [UIImage imageNamed:@"search-icon.png"];
             cell.title.text = @"البحث عن الاستراحات";
-
+            
             break;
         case 1:
             cell.icon.image = [UIImage imageNamed:@"about-icon.png"];
             cell.title.text = @"عن استراحتي";
-
+            
             break;
         case 2:
             cell.icon.image = [UIImage imageNamed:@"contact.png"];
@@ -110,6 +111,10 @@
     if ( ![frontNavigationController.topViewController isKindOfClass:[className class]] )
     {
         id frontViewController = [[className alloc] init];
+//        if ([frontViewController isKindOfClass:[AboutViewController class]])
+//        {
+//            frontViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
+//        }
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
         [revealController setFrontViewPosition:FrontViewPositionRight animated:YES];
         [revealController setFrontViewController:navigationController animated:YES];
@@ -135,19 +140,19 @@
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://twitter.com/ISTRAHTI"]];
             break;
         case 2:
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.linkedin.com/company/%D8%A7%D8%B3%D8%AA%D8%B1%D8%A7%D8%AD%D8%AA%DB%8C"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.linkedin.com/company/%D8%A7%D8%B3%D8%AA%D8%B1%D8%A7%D8%AD%D8%AA%DB%8C"]];
             break;
         case 3:
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://plus.google.com/u/0/b/115231550025405649845/115231550025405649845/about"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://plus.google.com/u/0/b/115231550025405649845/115231550025405649845/about"]];
             break;
         case 4:
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@""]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@""]];
             break;
         case 5:
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.instagram.com/istrahti/"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.instagram.com/istrahti/"]];
             break;
         case 6:
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.youtube.com/channel/UCrffzRJPqY8JOV936i_Mpjg"]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.youtube.com/channel/UCrffzRJPqY8JOV936i_Mpjg"]];
             break;
         default:
             break;
@@ -161,13 +166,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

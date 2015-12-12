@@ -11,6 +11,7 @@
 #import "MapResultViewController.h"
 #import "SearchParaData.h"
 #import "SearchResult.h"
+#import "AboutViewController.h"
 
 @interface SearchViewController () <DatabaseDelegate,DatabaseRowDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {

@@ -106,13 +106,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
-    UIButton *_backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _backBtn.frame = CGRectMake(0, 0, 14, 22);
-    [_backBtn setBackgroundImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
-    [_backBtn setHighlighted:NO];
-    [_backBtn addTarget:self action:@selector(popViewController:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_backBtn];
     
     dataPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 700,self.view.frame.size.width , 206.0f)];
     dataPicker.dataSource = self;
@@ -437,10 +430,10 @@
     [self.view endEditing:YES];
 }
 
-- (void)popViewController:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
+//- (void)popViewController:(id)sender
+//{
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
 
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -474,7 +467,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SearchData *result = _Lounges[indexPath.row];
     SearchDetailsViewController *searchDetail = [[SearchDetailsViewController alloc]initWithNibName:@"SearchDetailsViewController" bundle:[NSBundle mainBundle]];
-    searchDetail.idstring = [NSString stringWithFormat:@"%i", result.IstrahaID];
+    searchDetail.istrahaID = [NSString stringWithFormat:@"%i",result.IstrahaID];
     [self.navigationController pushViewController:searchDetail animated:YES];
 }
 

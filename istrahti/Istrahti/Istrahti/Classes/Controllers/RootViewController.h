@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) SWRevealViewController *viewController;
 
-@property (weak, nonatomic) UIButton *backBtn ;
+@property (strong, nonatomic) UIButton *backBtn ;
 
 - (SWRevealViewController *)setSideBarMenu ;
 

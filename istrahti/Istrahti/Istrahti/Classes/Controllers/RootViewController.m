@@ -34,12 +34,14 @@
     [revealController tapGestureRecognizer];
     [revealController panGestureRecognizer];
     
-//    _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    _backBtn.frame = CGRectMake(0, 0, 14, 22);
-//    [_backBtn setBackgroundImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
-//    [_backBtn setHighlighted:NO];
-//    [_backBtn addTarget:self action:@selector(popViewController:) forControlEvents:UIControlEventTouchUpInside];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_backBtn];
+    if (self.navigationController.viewControllers.count > 1)
+    {
+        _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _backBtn.frame = CGRectMake(0, 0, 14, 22);
+        [_backBtn setBackgroundImage:[UIImage imageNamed:@"back-arrow.png"] forState:UIControlStateNormal];
+        [_backBtn addTarget:self action:@selector(popViewController:) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_backBtn];
+    }
     
     UIButton *reavelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     reavelBtn.frame = CGRectMake(0, 0, 25, 22);

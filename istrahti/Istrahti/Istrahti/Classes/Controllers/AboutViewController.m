@@ -2,27 +2,21 @@
 //  AboutViewController.m
 //  Istrahti
 //
-//  Created by Ahmed Askar on 9/13/15.
-//  Copyright (c) 2015 Ahmed Askar. All rights reserved.
+//  Created by Ahmed Askar on 12/13/15.
+//  Copyright © 2015 Ahmed Askar. All rights reserved.
 //
 
 #import "AboutViewController.h"
-#import "SWRevealViewController.h"
 
 @interface AboutViewController ()
-
-@property (nonatomic) UIBarButtonItem* revealButtonItem;
 
 @end
 
 @implementation AboutViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"عن استراحتي";
-    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -305,10 +305,6 @@
 		149FDC921B92FDBA00B5C818 /* radio-inactive@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 149FDC8C1B92FDBA00B5C818 /* radio-inactive@3x.png */; };
 		149FDC931B92FDBA00B5C818 /* radio-inactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 149FDC8D1B92FDBA00B5C818 /* radio-inactive@2x.png */; };
 		149FDC941B92FDBA00B5C818 /* radio-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 149FDC8E1B92FDBA00B5C818 /* radio-active@2x.png */; };
-		14BF759C1BA597B900938E7F /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14BF759A1BA597B900938E7F /* AboutViewController.m */; };
-		14BF759D1BA597B900938E7F /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14BF759B1BA597B900938E7F /* AboutViewController.xib */; };
-		14BF75A11BA597C600938E7F /* ContactUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14BF759F1BA597C600938E7F /* ContactUsViewController.m */; };
-		14BF75A21BA597C600938E7F /* ContactUsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14BF75A01BA597C600938E7F /* ContactUsViewController.xib */; };
 		14D0F5071B8DA3F900A0DC86 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14D0F5051B8DA3F900A0DC86 /* LoginViewController.m */; };
 		14D0F5081B8DA3F900A0DC86 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14D0F5061B8DA3F900A0DC86 /* LoginViewController.xib */; };
 		14D0F50C1B8DA40B00A0DC86 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14D0F50A1B8DA40B00A0DC86 /* RegisterViewController.m */; };
@@ -363,6 +359,8 @@
 		14EF06C91C1C670F00A38C9D /* snapchat@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14EF06C61C1C670F00A38C9D /* snapchat@1x.png */; };
 		14EF06CA1C1C670F00A38C9D /* snapchat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14EF06C71C1C670F00A38C9D /* snapchat@2x.png */; };
 		14EF06CB1C1C670F00A38C9D /* snapchat@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 14EF06C81C1C670F00A38C9D /* snapchat@3x.png */; };
+		14EF06CF1C1CE03E00A38C9D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14EF06CD1C1CE03E00A38C9D /* AboutViewController.m */; };
+		14EF06D01C1CE03E00A38C9D /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14EF06CE1C1CE03E00A38C9D /* AboutViewController.xib */; };
 		7E70DFB81C04FB840081BFE3 /* IstrahtyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E70DFB71C04FB840081BFE3 /* IstrahtyModel.m */; };
 		7E70DFBB1C04FE780081BFE3 /* FacilityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E70DFBA1C04FE780081BFE3 /* FacilityModel.m */; };
 		7E70DFBE1C05384D0081BFE3 /* NSDictionary+ReplacingNull.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E70DFBD1C05384D0081BFE3 /* NSDictionary+ReplacingNull.m */; };
@@ -743,12 +741,6 @@
 		149FDC8C1B92FDBA00B5C818 /* radio-inactive@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-inactive@3x.png"; sourceTree = "<group>"; };
 		149FDC8D1B92FDBA00B5C818 /* radio-inactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-inactive@2x.png"; sourceTree = "<group>"; };
 		149FDC8E1B92FDBA00B5C818 /* radio-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "radio-active@2x.png"; sourceTree = "<group>"; };
-		14BF75991BA597B900938E7F /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		14BF759A1BA597B900938E7F /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		14BF759B1BA597B900938E7F /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
-		14BF759E1BA597C600938E7F /* ContactUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsViewController.h; sourceTree = "<group>"; };
-		14BF759F1BA597C600938E7F /* ContactUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsViewController.m; sourceTree = "<group>"; };
-		14BF75A01BA597C600938E7F /* ContactUsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsViewController.xib; sourceTree = "<group>"; };
 		14D0F5041B8DA3F900A0DC86 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		14D0F5051B8DA3F900A0DC86 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		14D0F5061B8DA3F900A0DC86 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -815,6 +807,9 @@
 		14EF06C61C1C670F00A38C9D /* snapchat@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snapchat@1x.png"; sourceTree = "<group>"; };
 		14EF06C71C1C670F00A38C9D /* snapchat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snapchat@2x.png"; sourceTree = "<group>"; };
 		14EF06C81C1C670F00A38C9D /* snapchat@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "snapchat@3x.png"; sourceTree = "<group>"; };
+		14EF06CC1C1CE03E00A38C9D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		14EF06CD1C1CE03E00A38C9D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		14EF06CE1C1CE03E00A38C9D /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		7E70DFB61C04FB840081BFE3 /* IstrahtyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IstrahtyModel.h; sourceTree = "<group>"; };
 		7E70DFB71C04FB840081BFE3 /* IstrahtyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IstrahtyModel.m; sourceTree = "<group>"; };
 		7E70DFB91C04FE780081BFE3 /* FacilityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacilityModel.h; sourceTree = "<group>"; };
@@ -985,12 +980,9 @@
 				14D0F51E1B8DA46600A0DC86 /* GalleryViewController.m */,
 				14D0F51F1B8DA46600A0DC86 /* GalleryViewController.xib */,
 				146F60ED1B8A5FDB00FCBDEB /* Untitled.png */,
-				14BF75991BA597B900938E7F /* AboutViewController.h */,
-				14BF759A1BA597B900938E7F /* AboutViewController.m */,
-				14BF759B1BA597B900938E7F /* AboutViewController.xib */,
-				14BF759E1BA597C600938E7F /* ContactUsViewController.h */,
-				14BF759F1BA597C600938E7F /* ContactUsViewController.m */,
-				14BF75A01BA597C600938E7F /* ContactUsViewController.xib */,
+				14EF06CC1C1CE03E00A38C9D /* AboutViewController.h */,
+				14EF06CD1C1CE03E00A38C9D /* AboutViewController.m */,
+				14EF06CE1C1CE03E00A38C9D /* AboutViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1839,7 +1831,6 @@
 				1431EB8B1B83347100E71A3A /* contact@2x.png in Resources */,
 				1431EB631B83347100E71A3A /* filter@1x.png in Resources */,
 				1431EBB61B83347100E71A3A /* liv@3x.png in Resources */,
-				14BF75A21BA597C600938E7F /* ContactUsViewController.xib in Resources */,
 				149FDC6D1B91FEA400B5C818 /* div-sr@1x.png in Resources */,
 				1431EBC61B83347100E71A3A /* review-active@1x.png in Resources */,
 				14EF06AF1C1C657700A38C9D /* cfacebook@3x.png in Resources */,
@@ -1889,6 +1880,7 @@
 				14EF06B01C1C657700A38C9D /* cgooglep@1x.png in Resources */,
 				1431EBB21B83347100E71A3A /* kitchen@2x.png in Resources */,
 				1431EBBD1B83347100E71A3A /* rating-hand@1x.png in Resources */,
+				14EF06D01C1CE03E00A38C9D /* AboutViewController.xib in Resources */,
 				1431EBAA1B83347100E71A3A /* contact-info@3x.png in Resources */,
 				149FDC6B1B91FEA400B5C818 /* cp-sr@2x.png in Resources */,
 				149FDC6A1B91FEA400B5C818 /* cp-sr@1x.png in Resources */,
@@ -2045,7 +2037,6 @@
 				1431EB971B83347100E71A3A /* search-icon@2x.png in Resources */,
 				1431EB761B83347100E71A3A /* view-detail@2x.png in Resources */,
 				14EF06BB1C1C657700A38C9D /* ctwitter@3x.png in Resources */,
-				14BF759D1BA597B900938E7F /* AboutViewController.xib in Resources */,
 				1431EB261B83347100E71A3A /* DINNextLTArabic-Light.ttf in Resources */,
 				1431EB481B83347100E71A3A /* btnCheck@2x.png in Resources */,
 				1431EB571B83347100E71A3A /* stratup.png in Resources */,
@@ -2126,13 +2117,11 @@
 				1431EB361B83347100E71A3A /* UIProgressView+AFNetworking.m in Sources */,
 				1431EB281B83347100E71A3A /* AFHTTPRequestOperation.m in Sources */,
 				1431EB421B83347100E71A3A /* PXAlertView.m in Sources */,
-				14BF759C1BA597B900938E7F /* AboutViewController.m in Sources */,
 				1431EB411B83347100E71A3A /* PXAlertView+Customization.m in Sources */,
 				14D0F5161B8DA42900A0DC86 /* BookingViewController.m in Sources */,
 				1431EB1F1B83347100E71A3A /* CollapseClickArrow.m in Sources */,
 				1473C6681B8659C0006C693A /* MapAnnotation.m in Sources */,
 				1431EB161B83347100E71A3A /* StartingViewController.m in Sources */,
-				14BF75A11BA597C600938E7F /* ContactUsViewController.m in Sources */,
 				7E70DFBE1C05384D0081BFE3 /* NSDictionary+ReplacingNull.m in Sources */,
 				1431E99A1B83344200E71A3A /* main.m in Sources */,
 				1431EB311B83347100E71A3A /* AFNetworkActivityIndicatorManager.m in Sources */,
@@ -2164,6 +2153,7 @@
 				1431EB1A1B83347100E71A3A /* Database.m in Sources */,
 				1431EB3C1B83347100E71A3A /* MBProgressHUD.m in Sources */,
 				141541E71B86FD1800F4C9E9 /* LocationModel.m in Sources */,
+				14EF06CF1C1CE03E00A38C9D /* AboutViewController.m in Sources */,
 				1431EB2B1B83347100E71A3A /* AFNetworkReachabilityManager.m in Sources */,
 				1431EB2F1B83347100E71A3A /* AFURLResponseSerialization.m in Sources */,
 				1431EB1E1B83347100E71A3A /* CollapseClick.m in Sources */,

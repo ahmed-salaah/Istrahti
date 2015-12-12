@@ -7,16 +7,22 @@
 //
 
 #import "AboutViewController.h"
+#import "SWRevealViewController.h"
 
 @interface AboutViewController ()
+
+@property (nonatomic) UIBarButtonItem* revealButtonItem;
 
 @end
 
 @implementation AboutViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.title = @"عن استراحتي";
+    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 }
 
 - (void)didReceiveMemoryWarning {

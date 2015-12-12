@@ -76,7 +76,6 @@
 //    [[Database getObject] databaseSelectQuery:query withDelegate:self AndRowDelegate:self];
 //    cityTxt.text = cities[0];
     originalFrame =searchView.frame;
-
 }
 
 - (void)viewDidLoad
@@ -772,7 +771,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
     NSLog(@"Date selected: %@",[_formatter stringFromDate:selectedDate]);
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }

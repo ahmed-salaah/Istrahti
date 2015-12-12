@@ -21,6 +21,9 @@
     [[Database getObject]setDatabaseName:@"Istrahti" andType:@"sqlite"];
     
     [[UINavigationBar appearance] setBarTintColor:RGBA(47, 120, 143, 1)];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],
+                                                           NSFontAttributeName:[UIFont fontWithName:@"JFFlat-Regular" size:15.0f]}];
+
     [[UINavigationBar appearance] setTranslucent:NO];
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 

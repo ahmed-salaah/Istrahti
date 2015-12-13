@@ -17,6 +17,8 @@
             <string>JFFlat-Regular</string>
             <string>JFFlat-Regular</string>
             <string>JFFlat-Regular</string>
+            <string>JFFlat-Regular</string>
+            <string>JFFlat-Regular</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -27,10 +29,13 @@
                 <outlet property="istrahaDetailsLabel" destination="SP9-DE-7e7" id="7fy-2y-YWa"/>
                 <outlet property="istrahaNameLabel" destination="cQ9-AO-Gpi" id="aoA-vV-QLy"/>
                 <outlet property="istrahaNoLabel" destination="0uK-X9-1XM" id="udi-Wg-OYA"/>
-                <outlet property="istrahaPhone" destination="17x-p7-SbN" id="s7a-cP-ac4"/>
+                <outlet property="istrahaPhone" destination="tjp-TH-E0J" id="2jM-vf-OcT"/>
+                <outlet property="mainImageView" destination="Q36-43-XgV" id="ySX-NF-R39"/>
+                <outlet property="nextBtn" destination="h8g-Xx-Rh9" id="Jzi-hZ-fPG"/>
+                <outlet property="previousBtn" destination="PUO-J2-2lL" id="XT0-5E-oEn"/>
+                <outlet property="priceLabel" destination="VXy-Gq-SgH" id="97I-Pa-KDe"/>
                 <outlet property="rateView" destination="WM7-Dd-iB2" id="B04-nK-W70"/>
                 <outlet property="scrollView" destination="ZTe-E5-r0S" id="d2R-f1-Wzy"/>
-                <outlet property="slider" destination="kZ8-HS-028" id="zih-B8-ElC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -44,32 +49,32 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="iUS-9N-G7A">
-                            <rect key="frame" x="11" y="253" width="299" height="210"/>
+                            <rect key="frame" x="0.0" y="230" width="320" height="210"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view userInteractionEnabled="NO" contentMode="scaleToFill" id="WM7-Dd-iB2" customClass="HCSStarRatingView">
-                                    <rect key="frame" x="204" y="105" width="86" height="14"/>
+                                    <rect key="frame" x="216" y="105" width="86" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <color key="tintColor" red="0.90588235289999997" green="0.82745098039999998" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="380 تقييم" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dGT-pq-llM">
-                                    <rect key="frame" x="201" y="127" width="94" height="22"/>
+                                    <rect key="frame" x="213" y="127" width="94" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="الإجمالي" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Th-6P-M5G">
-                                    <rect key="frame" x="227" y="170" width="41" height="16"/>
+                                    <rect key="frame" x="239" y="170" width="41" height="16"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="10"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ر.س1500" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VXy-Gq-SgH">
-                                    <rect key="frame" x="216" y="149" width="63" height="19"/>
+                                    <rect key="frame" x="228" y="149" width="63" height="19"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="11"/>
@@ -77,7 +82,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="استراحة دار الضيافة استراحة دار الضيافة " textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cQ9-AO-Gpi">
-                                    <rect key="frame" x="8" y="76" width="176.5" height="34"/>
+                                    <rect key="frame" x="8" y="76" width="189.5" height="34"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="12"/>
@@ -85,7 +90,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="الرياض" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1SP-hv-8BN">
-                                    <rect key="frame" x="102" y="112" width="87" height="17"/>
+                                    <rect key="frame" x="102" y="111" width="96" height="17"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
@@ -93,62 +98,60 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="است راحة دار الض يافة الرياض است راحة دار الضيافة الرياض استراحة دار الضيافة الرياض استراحة دار الضيافة الرياض" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SP9-DE-7e7">
-                                    <rect key="frame" x="8" y="132" width="177" height="68"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <rect key="frame" x="8" y="132" width="190" height="68"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="14"/>
                                     <color key="textColor" red="0.60784313729999995" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" id="5I7-FM-UJU">
-                                    <rect key="frame" x="197" y="74" width="1" height="128"/>
+                                    <rect key="frame" x="207" y="74" width="1" height="128"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rating-hand" id="UhV-oQ-CMj">
+                                    <rect key="frame" x="227" y="76" width="18" height="20"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <animations/>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="K1k-Zf-c7h">
+                                    <rect key="frame" x="252" y="76" width="35.5" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <animations/>
                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="حبيبنا ما عليك امر بلغ صاحب الإستراحه انك اخذت الرقم من موقع استراحتي" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tKV-dy-web">
-                            <rect key="frame" x="11" y="496" width="296" height="31"/>
+                            <rect key="frame" x="11" y="473" width="296" height="31"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="14"/>
                             <color key="textColor" red="0.4549019608" green="0.4549019608" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="٠٠٥٠٦٠٥٠" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="17x-p7-SbN">
-                            <rect key="frame" x="50" y="542" width="222" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Q36-43-XgV" customClass="AsyncImageView">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <color key="backgroundColor" red="0.57647058819999997" green="0.76862745099999996" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="17"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="20"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </label>
-                        <view contentMode="scaleToFill" id="kZ8-HS-028" customClass="JOLImageSlider">
-                            <rect key="frame" x="11" y="23" width="299" height="230"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="رقم الاستراحه" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0uK-X9-1XM">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="27"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </view>
-                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="رقم الاستراحه" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0uK-X9-1XM">
-                            <rect key="frame" x="11" y="23" width="299" height="27"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.58823529409999997" green="0.76862745099999996" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.58823529409999997" green="0.76862745099999996" blue="0.25882352939999997" alpha="0.81492820945945943" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view clipsSubviews="YES" contentMode="scaleToFill" id="VDt-zb-IeI" customClass="iCarousel">
-                            <rect key="frame" x="39" y="266" width="243" height="54"/>
+                            <rect key="frame" x="39" y="243" width="243" height="54"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -157,21 +160,8 @@
                                 <outlet property="delegate" destination="-1" id="flH-dK-buZ"/>
                             </connections>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rating-hand" id="UhV-oQ-CMj">
-                            <rect key="frame" x="218" y="328" width="18" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
-                            <animations/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3.50" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="K1k-Zf-c7h">
-                            <rect key="frame" x="243" y="328" width="35.5" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
-                            <animations/>
-                            <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="k5a-Yl-CTf">
-                            <rect key="frame" x="18" y="279" width="14" height="28"/>
+                            <rect key="frame" x="18" y="256" width="14" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <state key="normal" image="detail-l-arrow"/>
@@ -180,7 +170,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CHN-n6-nW1">
-                            <rect key="frame" x="287" y="279" width="14" height="28"/>
+                            <rect key="frame" x="290" y="256" width="14" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <state key="normal" image="detail-r-arrow.png"/>
@@ -189,22 +179,61 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="الاستفسار والحجز عبر الهاتف" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="w8A-kU-l0c">
-                            <rect key="frame" x="11" y="471" width="296" height="24"/>
+                            <rect key="frame" x="11" y="448" width="296" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <animations/>
                             <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
                             <color key="textColor" red="0.4549019608" green="0.4549019608" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="iLo-TX-2P9">
-                            <rect key="frame" x="16" y="591" width="289" height="29"/>
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="h8g-Xx-Rh9">
+                            <rect key="frame" x="286" y="100" width="22" height="38"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <animations/>
-                            <segments>
-                                <segment title="خريطة"/>
-                                <segment title="ملخص"/>
-                            </segments>
-                        </segmentedControl>
+                            <state key="normal" backgroundImage="slider-rarrow"/>
+                            <connections>
+                                <action selector="switchAction:" destination="-1" eventType="touchUpInside" id="sQ7-aL-jJz"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="PUO-J2-2lL">
+                            <rect key="frame" x="12" y="100" width="22" height="38"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <state key="normal" backgroundImage="slider-larrow"/>
+                            <connections>
+                                <action selector="switchAction:" destination="-1" eventType="touchUpInside" id="3Th-MT-jbb"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="tjp-TH-E0J">
+                            <rect key="frame" x="50" y="519" width="222" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.57647058819999997" green="0.76862745099999996" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
+                            <state key="normal" title="٠٠٥٠٦٠٥٠">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ht7-Sy-0VO">
+                            <rect key="frame" x="10" y="573" width="150" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.57647058819999997" green="0.76862745099999996" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
+                            <state key="normal" title="٠٠٥٠٦٠٥٠">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="J1s-ZP-VsU">
+                            <rect key="frame" x="160" y="573" width="150" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.57647058819999997" green="0.76862745099999996" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="JFFlat-Regular" family="JF Flat" pointSize="15"/>
+                            <state key="normal" title="٠٠٥٠٦٠٥٠">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                     </subviews>
                     <animations/>
                 </scrollView>
@@ -212,12 +241,14 @@
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="279" y="576"/>
+            <point key="canvasLocation" x="230" y="618"/>
         </view>
     </objects>
     <resources>
         <image name="detail-l-arrow" width="20" height="40"/>
         <image name="detail-r-arrow.png" width="20" height="40"/>
         <image name="rating-hand" width="22" height="22"/>
+        <image name="slider-larrow" width="27" height="53"/>
+        <image name="slider-rarrow" width="27" height="53"/>
     </resources>
 </document>

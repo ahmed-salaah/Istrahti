@@ -10,22 +10,27 @@
 #import "IstrahtyModel.h"
 #import "AsyncImageView.h"
 
-@interface SearchDetailsViewController ()<JOLImageSliderDelegate>
+@interface SearchDetailsViewController ()
 {
    __block IstrahtyModel *model;
+    int imageIndex ;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UILabel *istrahaNoLabel;
+@property (weak, nonatomic) IBOutlet AsyncImageView *mainImageView;
+@property (weak ,nonatomic) IBOutlet UIButton *nextBtn ;
+@property (weak ,nonatomic) IBOutlet UIButton *previousBtn ;
+
 @property (weak, nonatomic) IBOutlet UILabel *istrahaNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *cityLabel;
-@property (weak, nonatomic) IBOutlet UILabel *istrahaPhone;
+@property (weak, nonatomic) IBOutlet UIButton *istrahaPhone;
 @property (weak, nonatomic) IBOutlet UILabel *istrahaDetailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 
 @property (weak, nonatomic) IBOutlet HCSStarRatingView *rateView;
 @property (weak, nonatomic) IBOutlet iCarousel *carousel;
-@property (weak, nonatomic) IBOutlet JOLImageSlider *slider;
+
 
 @end
 
@@ -35,6 +40,8 @@
 {
     [super viewDidLoad];
 
+    imageIndex = 0 ;
+    
     [self configureUI];
     
     [self loadData];
@@ -44,10 +51,15 @@
 {
     self.carousel.type = iCarouselTypeLinear;
     
+    self.istrahaPhone.layer.cornerRadius = 16.0f;
+    self.istrahaPhone.clipsToBounds = YES ;
+    
+    [self.scrollView setContentSize:self.scrollView.frame.size];
+    
     [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JFFlat-Regular" size:13.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
 
--(void)loadData
+- (void)loadData
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -69,37 +81,21 @@
 
 - (void)setViews
 {
-    NSMutableArray *slideSet = [[NSMutableArray alloc]init];
-    for (NSString *imageURL in model.imagesArray)
+    if (model.imagesArray.count > 0)
     {
-        JOLImageSlide *slide = [[JOLImageSlide alloc] init];
-        slide.image = imageURL;
-        [slideSet addObject:slide];
+        [self showImageWithIndex];
     }
 
-    self.slider.slideArray = slideSet;
-
-    self.slider.delegate = self;
-    [self.slider setAutoSlide: YES];
-    [self.slider setPlaceholderImage:@"placeholder.png"];
-    [self.slider setContentMode: UIViewContentModeScaleAspectFill];
-    [self.slider loadData];
     [self.carousel reloadData];
-    [self.carousel scrollToItemAtIndex:1 animated:YES];
     [self.carousel setBackgroundColor:[UIColor clearColor]];
     
     self.istrahaDetailsLabel.text = model.istrahaDescription;
     self.istrahaNameLabel.text = model.istrahaName;
-    self.istrahaPhone.text = model.contactNo;
+    [self.istrahaPhone setTitle:model.contactNo forState:UIControlStateNormal];
     self.rateView.value = [model.rating floatValue];
     self.priceLabel.text = [NSString stringWithFormat:@"ر.س %@",model.price];
     self.cityLabel.text = model.city;
     self.istrahaNoLabel.text = [NSString stringWithFormat:@"رقم الاستراحه %@",self.istrahaID];
-}
-
-- (void) imagePager:(JOLImageSlider *)imagePager didSelectImageAtIndex:(NSUInteger)index
-{
-
 }
 
 #pragma mark -
@@ -125,15 +121,63 @@
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
-    
-//    [self goToPostView:[catArr objectAtIndex:index]];
-    
+    if (model.imagesArray.count > 0)
+    {
+        imageIndex = (int)index ;
+        [self showImageWithIndex];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - Event Handler
+- (IBAction)switchAction:(id)sender
+{
+    if ([sender tag] == 1 && imageIndex > 0)
+    {
+        imageIndex--;
+    }
+    else if ([sender tag] == 2 && imageIndex < model.imagesArray.count-1)
+    {
+        if (model.imagesArray.count >= imageIndex+1) {
+            imageIndex++;
+        }
+    }
+    
+    [self showImageWithIndex];
+}
+
+- (void)showImageWithIndex
+{
+    if (model.imagesArray.count > 0)
+    {
+        [self.mainImageView setImageURL:[NSURL URLWithString:model.imagesArray[imageIndex]]];
+    }
+
+    if (imageIndex == (model.imagesArray.count - 1))
+    {
+        self.nextBtn.hidden = YES ;
+        self.previousBtn.hidden = NO ;
+    }
+    else if (imageIndex == 0)
+    {
+        self.nextBtn.hidden = NO ;
+        self.previousBtn.hidden = YES ;
+    }else{
+        self.nextBtn.hidden = NO ;
+        self.previousBtn.hidden = NO ;
+    }
+    
+    if (model.imagesArray.count == 1)
+    {
+        self.nextBtn.hidden = YES ;
+        self.previousBtn.hidden = YES ;
+    }
 }
 
 - (IBAction)forwardAction:(id)sender
@@ -143,6 +187,6 @@
 
 - (IBAction)backAction:(id)sender
 {
-    self.carousel.currentItemIndex--;
+   self.carousel.currentItemIndex--;
 }
 @end

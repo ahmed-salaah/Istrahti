@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Istrahati.pch"
-#import "JOLImageSlider.h"
-#import "JOLImageSlide.h"
 #import "iCarousel.h"
 #import "HCSStarRatingView.h"
 

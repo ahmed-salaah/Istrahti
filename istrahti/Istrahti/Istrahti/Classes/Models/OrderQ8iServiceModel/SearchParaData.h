@@ -19,7 +19,6 @@
 @property (nonatomic ,assign) int Page ;
 @property (nonatomic ,strong) NSString *SortBy ;
 
-
 @property (nonatomic ,assign) NSNumber *Singles ;
 @property (nonatomic ,assign) NSNumber *Family ;
 @property (nonatomic ,assign) NSNumber *Events ;
@@ -27,7 +26,6 @@
 @property (nonatomic ,assign) NSNumber *SwimmingPool ;
 @property (nonatomic ,assign) NSNumber *Seperation ;
 @property (nonatomic ,assign) NSNumber *WomenSwimming ;
-
 
 @property (nonatomic ,assign) NSNumber *Bedrooms ;
 @property (nonatomic ,assign) NSNumber *Livingrooms ;

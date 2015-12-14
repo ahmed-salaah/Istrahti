@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Istrahati.pch"
-#import "THDatePickerViewController.h"
 
-@interface SearchViewController : RootViewController <THDatePickerDelegate>
-
-@property (nonatomic, strong) THDatePickerViewController * datePickr;
-
-@property (nonatomic, retain) NSDate * curDate;
-@property (nonatomic, retain) NSDateFormatter * formatter;
+@interface SearchViewController : RootViewController
 
 @end

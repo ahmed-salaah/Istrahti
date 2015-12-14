@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) THDatePickerViewController * datePickr;
 @property (nonatomic ,assign) BOOL displayList ;
-@property (nonatomic ,strong) NSArray *Lounges ;
+@property (nonatomic ,strong) NSMutableArray *Lounges ;
 @property (nonatomic ,strong) SearchParaData *searchParaData ;
 @property (nonatomic ,strong) NSMutableArray *smallIcons ;
 @property (nonatomic ,assign) int smallIconsCount ;

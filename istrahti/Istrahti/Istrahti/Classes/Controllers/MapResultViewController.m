@@ -154,7 +154,7 @@
         
         return nil;
     } else {
-        [newAnnotationView setImage:[UIImage imageNamed:@"map-many.png"]];
+        [newAnnotationView setImage:[UIImage imageNamed:@"map-pin.png"]];
     }
     
     return newAnnotationView;

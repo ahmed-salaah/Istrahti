@@ -8,13 +8,16 @@
 
 #import "IstrahtyModel.h"
 #import "NSDictionary+ReplacingNull.h"
+
 @implementation IstrahtyModel
--(id)initWithDic:(NSDictionary *)dic{
+
+- (id)initWithDic:(NSDictionary *)dic
+{
     self.facilities = [NSMutableArray new];
     self.imagesArray = [NSMutableArray new];
     NSArray *facilitiesArr = [dic jsonObjectForKey:@"Facilities"];
     for (NSDictionary *facilityDic in facilitiesArr) {
-        FacilityModel *model = [[FacilityModel alloc]initWithDic:facilityDic];
+        FacilityModel *model = [[FacilityModel alloc]initWithDictionary:facilityDic];
         [self.facilities addObject:model];
     }
     NSArray *images = [dic jsonObjectForKey:@"Images"];

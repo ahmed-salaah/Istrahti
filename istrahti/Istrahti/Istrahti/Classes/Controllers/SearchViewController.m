@@ -12,21 +12,17 @@
 #import "SearchParaData.h"
 #import "SearchResult.h"
 #import "AboutViewController.h"
+#import "SearchDetailsViewController.h"
+#import "AlertManager.h"
 
 @interface SearchViewController () <DatabaseDelegate,DatabaseRowDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
     float animatedDistance ;
-
+    
     __weak IBOutlet UITextField *cityTxt;
-    __weak IBOutlet UITextField *firstDate;
-    __weak IBOutlet UITextField *secondDate;
-    __weak IBOutlet UITextField *reservationTypTxt;
-    __weak IBOutlet UIView *reservationTypeBGView;
-    __weak IBOutlet UIImageView *dropListIcon;
     
     __weak IBOutlet UILabel *textFieldTitle;
-    __weak IBOutlet UITextField *periodTxt;
-    __weak IBOutlet UIView      *periodView;
+    
     __weak IBOutlet UIButton    *searchByListBtn;
     __weak IBOutlet UIButton    *searchByMapBtn;
     __weak IBOutlet UIButton    *searchByRestNo;
@@ -36,32 +32,13 @@
     __weak IBOutlet UIButton    *familyBtn;
     __weak IBOutlet UIButton    *eventBtn;
     
-    __weak IBOutlet UIView *cityTextView;
-    __weak IBOutlet UIView *fromDateView ;
-    __weak IBOutlet UIView *toDateView ;
-    
+    __weak IBOutlet UIView *entryTextView;
     __weak IBOutlet UIView *searchView;
+    
     UIPickerView *dataPicker ;
-    
-    NSDate *fromDate;
-    NSDate *toDate;
-    BOOL fromDateSelected ;
-    
     NSArray *cities ;
-    NSArray *resevationData;
-    NSArray *periodData;
-    NSArray *periodMapData;
-
-    BOOL citySelected ;
-    BOOL reservationSelected ;
-    BOOL periodSelected ;
     BOOL restNo;
-    //search post parameters
     SearchParaData *searchData ;
-    NSString *startDate ;
-    NSString *endDate ;
-    NSString *Type;
-    NSString *TimePeriod;
     CGRect originalFrame;
     UIToolbar *toolBar ;
     UILabel *toolBarTitle ;
@@ -73,41 +50,33 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-//    NSString *query = @"SELECT * FROM Cities";
-//    [[Database getObject] databaseSelectQuery:query withDelegate:self AndRowDelegate:self];
-//    cityTxt.text = cities[0];
-    originalFrame =searchView.frame;
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
-    [userMyLocationBtn setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [userMyLocationBtn setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"] forState:UIControlStateSelected];
-    [useAllCountriesBtn setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [useAllCountriesBtn setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"] forState:UIControlStateSelected];
-    [youthBtn setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [youthBtn setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"] forState:UIControlStateSelected];
-    [familyBtn setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [familyBtn setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"] forState:UIControlStateSelected];
-    [eventBtn setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [eventBtn setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"] forState:UIControlStateSelected];
-    [searchByListBtn setBackgroundImage:[UIImage imageNamed:@"radio-inactive.png"] forState:UIControlStateNormal];
-    [searchByListBtn setBackgroundImage:[UIImage imageNamed:@"radio-active.png"] forState:UIControlStateSelected];
-    [searchByMapBtn setBackgroundImage:[UIImage imageNamed:@"radio-inactive.png"] forState:UIControlStateNormal];
-    [searchByMapBtn setBackgroundImage:[UIImage imageNamed:@"radio-active.png"] forState:UIControlStateSelected];
-    [searchByRestNo setBackgroundImage:[UIImage imageNamed:@"radio-inactive.png"] forState:UIControlStateNormal];
-    [searchByRestNo setBackgroundImage:[UIImage imageNamed:@"radio-active.png"] forState:UIControlStateSelected];
-    searchByListBtn.selected = YES ;
     
+    [self configureUI];
+    
+    searchData = [SearchParaData new];
+    cities = [NSArray new];
+    
+    NSString *query = @"SELECT * FROM Cities";
+    [[Database getObject] databaseSelectQuery:query withDelegate:self AndRowDelegate:self];
+    cityTxt.text = cities[0];
+}
+
+- (void)configureUI
+{
     dataPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 0,self.view.frame.size.width , 162.0f)];
     dataPicker.dataSource = self;
     dataPicker.delegate = self;
     dataPicker.showsSelectionIndicator = YES;
     dataPicker.backgroundColor = RGBA(238, 238, 238, 1);
-   
+    
+    searchByListBtn.selected = YES ;
     toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,44)];
     [toolBar setTintColor:[UIColor whiteColor]];
     [toolBar setBarTintColor:RGBA(47, 120, 143, 1)];
@@ -119,159 +88,36 @@
     [toolBarTitle setFont:[UIFont fontWithName:@"JFFlat-Regular" size:16.0]];
     toolBarTitle.textAlignment = NSTextAlignmentCenter;
     UIBarButtonItem *typeField = [[UIBarButtonItem alloc] initWithCustomView:toolBarTitle];
-
+    
     UIBarButtonItem *fixedItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     
     fixedItem.width = (self.view.frame.size.width - 240.0f) / 2.0f;
-    if (IS_IPHONE_6) {
+    if (IS_IPHONE_6)
+    {
         fixedItem.width = (self.view.frame.size.width - 200.0f) / 2.0f;
-    }else if (IS_IPHONE_6P){
+    }
+    else if (IS_IPHONE_6P)
+    {
         fixedItem.width = (self.view.frame.size.width - 160.0f) / 2.0f;
     }
     
     toolBarTitle.text = @"اختر الدولة";
     toolBar.items = @[barButtonDone,fixedItem,typeField];
-   
     cityTxt.inputView = dataPicker ;
-    reservationTypTxt.inputView = dataPicker ;
-    periodTxt.inputView = dataPicker;
     cityTxt.inputAccessoryView = toolBar;
-    reservationTypTxt.inputAccessoryView = toolBar;
-    periodTxt.inputAccessoryView = toolBar;
-
-    reservationTypeBGView.frame = CGRectMake(12.0f, reservationTypeBGView.frame.origin.y, self.view.frame.size.width - 20.0f, reservationTypeBGView.frame.size.height);
-    dropListIcon.frame = CGRectMake(8.0f, dropListIcon.frame.origin.y,dropListIcon.frame.size.width,dropListIcon.frame.size.height);
     
-    searchData = [SearchParaData new];
-    cities = [NSArray new];
-    
-    resevationData = @[@"نصف يوم",@"يوم واحد",@"أكثر من يوم"];
-    periodData     = @[@"صباحا",@"مساء"];
-    periodMapData  = @[@"Morning",@"Evening"];
-    
-    startDate   = @"";
-    endDate     = @"";
-    Type        = @"1";
-    TimePeriod  = @"";
-    reservationTypTxt.text = @"يوم واحد";
-    periodTxt.text  = @"صباحا";
-    fromDateSelected = YES ;
-    
-    UITapGestureRecognizer *tapGuesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setFromDatePicker)];
-    tapGuesture.numberOfTapsRequired = 1;
-    [fromDateView addGestureRecognizer:tapGuesture];
-    
-    UITapGestureRecognizer *tapGuesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setToDatePicker)];
-    tapGuesture2.numberOfTapsRequired = 1;
-    [toDateView addGestureRecognizer:tapGuesture2];
-    
-    [self setDate:[NSDate date]];
-    
-    NSString *query = @"SELECT * FROM Cities";
-    [[Database getObject] databaseSelectQuery:query withDelegate:self AndRowDelegate:self];
-    cityTxt.text = cities[0];
+    useAllCountriesBtn.selected = NO;
+    searchByListBtn.selected = YES ;
 }
-
-#pragma mark - Methods
-
-- (void)setDate:(NSDate *)selectedDate
-{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
-    
-    NSString *formatedDate = [dateFormatter stringFromDate:selectedDate];
-    
-    NSDate *date = [dateFormatter dateFromString:formatedDate];
-    
-    if (fromDateSelected)
-    {
-        fromDateSelected = NO ;
-        fromDate = date ;
-        firstDate.text = formatedDate;
-        startDate = [NSString stringWithFormat:@"/Date(%lld-0000)/",(long long)([date timeIntervalSince1970] * 1000)];
-    }else{
-        toDate = date ;
-        secondDate.text =formatedDate;
-        endDate = [NSString stringWithFormat:@"/Date(%lld-0000)/",(long long)([date timeIntervalSince1970] * 1000)];
-    }
-}
-
-- (void)setFromDatePicker
-{
-    fromDateSelected = YES ;
-    if(!self.datePickr)
-        self.datePickr = [THDatePickerViewController datePicker];
-    self.datePickr.date = fromDate;
-    self.datePickr.delegate = self;
-    [self.datePickr setAllowClearDate:NO];
-    [self.datePickr setClearAsToday:YES];
-    [self.datePickr setAutoCloseOnSelectDate:NO];
-    [self.datePickr setAllowSelectionOfSelectedDate:YES];
-    [self.datePickr setDisableHistorySelection:YES];
-    [self.datePickr setDisableYearSwitch:YES];
-    [self.datePickr setDisableFutureSelection:NO];
-    [self.datePickr setDateTimeZoneWithName:@"UTC"];
-    [self.datePickr setSelectedBackgroundColor:RGBA(125, 208, 0, 1)];
-    [self.datePickr setCurrentDateColor:RGBA(242, 121, 53, 1)];
-    [self.datePickr setCurrentDateColorSelected:[UIColor yellowColor]];
-    
-    [self.datePickr setDateHasItemsCallback:^BOOL(NSDate *date) {
-        int tmp = (arc4random() % 30)+1;
-        return (tmp % 5 == 0);
-    }];
-    [self presentSemiViewController:self.datePickr withOptions:@{
-                                                                  KNSemiModalOptionKeys.pushParentBack    : @(NO),
-                                                                  KNSemiModalOptionKeys.animationDuration : @(1.0),
-                                                                  KNSemiModalOptionKeys.shadowOpacity     : @(0.3),
-                                                                  }];
-}
-
-- (void)setToDatePicker
-{
-    fromDateSelected = NO ;
-    if(!self.datePickr)
-        self.datePickr = [THDatePickerViewController datePicker];
-    self.datePickr.date = toDate;
-    self.datePickr.delegate = self;
-    [self.datePickr setAllowClearDate:NO];
-    [self.datePickr setClearAsToday:YES];
-    [self.datePickr setAutoCloseOnSelectDate:NO];
-    [self.datePickr setAllowSelectionOfSelectedDate:YES];
-    [self.datePickr setDisableHistorySelection:YES];
-    [self.datePickr setDisableYearSwitch:YES];
-    [self.datePickr setDisableFutureSelection:NO];
-    [self.datePickr setDateTimeZoneWithName:@"UTC"];
-    [self.datePickr setSelectedBackgroundColor:RGBA(125, 208, 0, 1)];
-    [self.datePickr setCurrentDateColor:RGBA(242, 121, 53, 1)];
-    [self.datePickr setCurrentDateColorSelected:[UIColor yellowColor]];
-    
-    [self.datePickr setDateHasItemsCallback:^BOOL(NSDate *date) {
-        int tmp = (arc4random() % 30)+1;
-        return (tmp % 5 == 0);
-    }];
-    [self presentSemiViewController:self.datePickr withOptions:@{
-                                                                 KNSemiModalOptionKeys.pushParentBack    : @(NO),
-                                                                 KNSemiModalOptionKeys.animationDuration : @(1.0),
-                                                                 KNSemiModalOptionKeys.shadowOpacity     : @(0.3),
-                                                                 }];
-}
-
 
 - (void)setPickerData
 {
-    if ([cityTxt isFirstResponder]) {
-        if (cityTxt.text.length == 0) {
+    if ([cityTxt isFirstResponder])
+    {
+        if (cityTxt.text.length == 0)
+        {
             cityTxt.text = cities[0];
         }
-    }
-    
-    if ([reservationTypTxt isFirstResponder]) {
-        
-    }
-    
-    if ([periodTxt isFirstResponder]) {
-        
     }
     
     [self.view endEditing:YES];
@@ -288,18 +134,18 @@
             searchByMapBtn.selected  = NO ;
             searchByRestNo.selected  = NO;
             restNo = NO;
+          
             textFieldTitle.text = @"المدينة";
             cityTxt.placeholder = @"اختر المدينة";
+            useAllCountriesBtn.enabled = YES ;
+
+            cityTxt.inputView = dataPicker ;
+            cityTxt.inputAccessoryView = toolBar;
+            
             [self setPickerData];
-            [UIView animateWithDuration:0.5 delay:0.3 options:0 animations:^{
-                
-                searchView.frame = originalFrame;
-            }completion:^(BOOL finished) {
-                cityTextView.hidden = NO;
 
-            }];
             break;
-
+            
         }
         case 1:{
             searchByListBtn.selected = NO ;
@@ -308,33 +154,35 @@
             restNo = NO;
             textFieldTitle.text = @"المدينة";
             cityTxt.placeholder = @"اختر المدينة";
-            [UIView animateWithDuration:0.5 delay:0.3 options:0 animations:^{
-                
-                searchView.frame = originalFrame;
-            }completion:^(BOOL finished) {
-                cityTextView.hidden = NO;
-
-            }];
-            break ;
-        }
-      
-        case 2:{
-            searchByListBtn.selected = NO ;
-            searchByMapBtn.selected  = NO ;
-            searchByRestNo.selected  = YES;
-            restNo = YES;
-            textFieldTitle.text = @"رقم الاستراحة";
-            cityTxt.placeholder = @"إدخل رقم الاستراحة";
-            cityTxt.text = @"";
-            cityTextView.hidden = YES;
-            [UIView animateWithDuration:0.5 delay:0.3 options:0 animations:^{
-                CGRect frame = searchView.frame;
-                frame.origin.y = cityTextView.frame.origin.y;
-                searchView.frame = frame;
-            }completion:nil];
+            useAllCountriesBtn.enabled = YES ;
+            
+            cityTxt.inputView = dataPicker ;
+            cityTxt.inputAccessoryView = toolBar;
+            
             break ;
         }
         
+        case 2:
+        {
+            searchByListBtn.selected = NO ;
+            searchByMapBtn.selected  = NO ;
+            searchByRestNo.selected  = YES;
+            
+            useAllCountriesBtn.selected = YES;
+            useAllCountriesBtn.enabled = NO ;
+            
+            cityTxt.inputView = nil ;
+            cityTxt.inputAccessoryView = nil;
+            
+            [self useAllCities:nil];
+            
+            textFieldTitle.text = @"البحث عبر رقم الاستراحة";
+            cityTxt.placeholder = @"أدخل رقم الاستراحة";
+            cityTxt.text = @"";
+            
+            break ;
+        }
+            
         default:
             break;
     }
@@ -342,18 +190,44 @@
 
 - (IBAction)useMyLocation:(id)sender
 {
-  
+    
 }
 
-- (IBAction)useAllCities:(id)sender {
-    useAllCountriesBtn.selected = !useAllCountriesBtn.selected;
+- (IBAction)useAllCities:(id)sender
+{
+    if (useAllCountriesBtn.selected)
+    {
+        useAllCountriesBtn.selected = NO;
+        [UIView animateWithDuration:0.5f animations:^{
+            searchView.frame = CGRectMake(searchView.frame.origin.x, entryTextView.frame.origin.y + entryTextView.frame.size.height + 4.0f,searchView.frame.size.width, searchView.frame.size.height);
+            
+        } completion:^(BOOL finished) {
+            entryTextView.hidden = NO;
+            
+        }];
+        
+    }else{
+        
+        useAllCountriesBtn.selected = YES;
+        
+        entryTextView.hidden = YES;
+        
+        [UIView animateWithDuration:0.5f animations:^{
+            searchView.frame = CGRectMake(searchView.frame.origin.x, entryTextView.frame.origin.y,searchView.frame.size.width, searchView.frame.size.height);
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
 }
 
 - (IBAction)SelectType:(id)sender
 {
     switch ([sender tag]) {
         case 10:
-            if (youthBtn.selected) {
+            if (youthBtn.selected)
+            {
                 youthBtn.selected = NO ;
             }else{
                 youthBtn.selected = YES ;
@@ -380,56 +254,55 @@
 
 - (IBAction)search:(id)sender
 {
+    if (searchByRestNo.selected)
+    {
+        NSString *str = cityTxt.text;
+        str = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
+        if (str.length == 0)
+        {
+            [AlertManager showNotificationOfType:NotificationtypeSucess title:@"" message:@"من فضلك أدخل رقم الإستراحة" inController:self];
+            return ;
+        }
+        SearchDetailsViewController *searchDetail = [[SearchDetailsViewController alloc]initWithNibName:@"SearchDetailsViewController" bundle:[NSBundle mainBundle]];
+        searchDetail.istrahaID = cityTxt.text;
+        [self.navigationController pushViewController:searchDetail animated:YES];
+        
+        return ;
+    }
+    
     searchData = [SearchParaData new];
-
-    if(![Validation validCountry:cityTxt.text])
-    {
-        return ;
-    }
     
-    if(![Validation validFromDate:startDate])
+    if (!useAllCountriesBtn.selected)
     {
-        return ;
-    }
-    if (endDate.length == 0) {
-        endDate = startDate ;
-    }
-
-    if(![Validation validReservationType:Type])
-    {
-        return ;
-    }
-    
-    if ([Type isEqualToString:@"0"])
-    {
-        searchData.HalfDay = true ;
-
-        if(![Validation validTime:TimePeriod])
+        if(![Validation validCountry:cityTxt.text])
         {
             return ;
         }
-    }else{
-        searchData.HalfDay = false ;
     }
+    
+    NSString *startDate = [NSString stringWithFormat:@"/Date(%lld-0000)/",(long long)([[NSDate date] timeIntervalSince1970] * 1000)];
+    NSString *endDate = [NSString stringWithFormat:@"/Date(%lld-0000)/",(long long)([[NSDate date] timeIntervalSince1970] * 1000)];
     
     searchData.City     = useAllCountriesBtn.selected?@"all":cityTxt.text;
     searchData.DateFrom = startDate ;
     searchData.DateTo   = endDate ;
-    searchData.Type     = Type ;
-    searchData.Time     = TimePeriod;
-    searchData.Page     = 1;
+    searchData.Type     = @"1" ;
+    searchData.Time     = @"";
+    searchData.Page     = 2;
     searchData.SortBy   = @"Popular";
-    
+    searchData.HalfDay = false ;
+
     searchData.SwimmingPool       = NULL ;
     searchData.WomenSwimming      = NULL ;
     searchData.Seperation      = NULL ;
     searchData.KidsPlay      = NULL ;
-
+    
     searchData.Bedrooms     = NULL ;
     searchData.Livingrooms  = NULL ;
     searchData.Bathrooms    = NULL ;
     searchData.Kitchens     = NULL ;
     searchData.Space        = NULL ;
+
 
     if (youthBtn.selected)
     {
@@ -452,48 +325,46 @@
         searchData.Events = NULL ;
     }
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    
+//    [hud setLabelText:@""];
+//    
+//    [[WebDataRepository sharedInstance] searchForLounge:searchData :^(id result) {
+//        
+//        SearchResult *response = [SearchResult modelFromJSONDictionary:result];
+//        
+//        NSArray *resultArray = [NSArray new];
+//        
+//        if (response.Data != nil)
+//        {
+//            resultArray = response.Data ;
+//        }
+//        
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    [hud setLabelText:@""];
-
-    [[WebDataRepository sharedInstance] searchForLounge:searchData :^(id result) {
-        
-        SearchResult *response = [SearchResult modelFromJSONDictionary:result];
-
-        NSArray *resultArray = [NSArray new];
-        
-        if (response.Data != nil)
-        {
-            resultArray = response.Data ;
-        }
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-
         if (searchByListBtn.selected)
         {
             ResultViewController *searchResultView = [[ResultViewController alloc] initWithNibName:@"ResultViewController" bundle:nil];
             searchResultView.displayList = YES ;
-            searchResultView.Lounges = resultArray ;
+//            searchResultView.Lounges = resultArray ;
             searchResultView.searchParaData = searchData;
-            searchResultView.startFromDate = fromDate ;
-            searchResultView.endToDate = toDate ;
+            searchResultView.startFromDate = [NSDate date] ;
+            searchResultView.endToDate = [NSDate date] ;
             [self.navigationController pushViewController:searchResultView animated:YES];
         }
-        
+
         if (searchByMapBtn.selected)
         {
             MapResultViewController *mapView = [[MapResultViewController alloc] initWithNibName:@"MapResultViewController" bundle:nil];
             mapView.displayMap = YES ;
             [self.navigationController pushViewController:mapView animated:YES];
         }
-        
-    } andFailure:^(NSString *message) {
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-
-    }];
+//    } andFailure:^(NSString *message) {
+//        
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        
+//    }];
 }
-
 
 #pragma mark - TextFieldDelegate
 
@@ -517,40 +388,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    switch ([textField tag])
-    {
-        case 0:
-            if (!restNo) {
-                toolBarTitle.text = @"اختر الدولة";
-                citySelected = YES ;
-                reservationSelected = NO ;
-                periodSelected = NO ;
-                [dataPicker selectRow:0 inComponent:0 animated:NO];
-            }
-            break;
-        case 1:{
-            toolBarTitle.text = @"نوع الحجز";
-            citySelected = NO ;
-            reservationSelected = YES ;
-            periodSelected = NO ;
-            [dataPicker selectRow:1 inComponent:0 animated:NO];
-            break;
-        }
-        case 2:{
-            toolBarTitle.text = @"اختر الفترة";
-            citySelected = NO ;
-            reservationSelected = NO ;
-            periodSelected = YES ;
-            [dataPicker selectRow:0 inComponent:0 animated:NO];
-     
-            break;
-        }
-    
-        default:
-            break;
-    }
-    
-    [dataPicker reloadAllComponents];
     CGRect textFieldRect = [self.view.window convertRect:textField.bounds fromView:textField];
     [self textDidBeginEditing:textFieldRect];
 }
@@ -630,7 +467,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
     NSString *countryName = [row objectForKey:@"CityName"];
     return countryName;
 }
-
 #pragma mark - PickerViewDatasource
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -640,136 +476,19 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    if (citySelected)
-    {
-       return cities.count;
-    }
-    else if (reservationSelected)
-    {
-        return resevationData.count;
-    }
-    else if (periodSelected)
-    {
-        return periodData.count ;
-    }
-    return 1;
+    return cities.count;
 }
 
 #pragma mark - Picker View Delegate
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    if (citySelected)
-    {
-        
-        cityTxt.text = cities[row];
-    }
-    else if (reservationSelected)
-    {
-        Type = [NSString stringWithFormat:@"%ld",(long)row];
-        reservationTypTxt.text = resevationData[row];
-        periodView.hidden = YES ;
-        if (row == 0)
-        {
-            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-               
-                if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
-                    reservationTypeBGView.frame = CGRectMake(169, reservationTypeBGView.frame.origin.y, 143, reservationTypeBGView.frame.size.height);
-                    reservationTypTxt.frame = CGRectMake(186, reservationTypTxt.frame.origin.y, 119, 30);
-                    dropListIcon.frame = CGRectMake(163, dropListIcon.frame.origin.y, 19, 32);
-                }else if (IS_IPHONE_6){
-                    reservationTypeBGView.frame = CGRectMake(199, reservationTypeBGView.frame.origin.y, 168, reservationTypeBGView.frame.size.height);
-                    reservationTypTxt.frame = CGRectMake(220, reservationTypTxt.frame.origin.y, 140, 30);
-                    dropListIcon.frame = CGRectMake(193, dropListIcon.frame.origin.y, 19, 32);
-                }else if (IS_IPHONE_6P){
-                    reservationTypeBGView.frame = CGRectMake(220, reservationTypeBGView.frame.origin.y, 186, reservationTypeBGView.frame.size.height);
-                    reservationTypTxt.frame = CGRectMake(244, reservationTypTxt.frame.origin.y, 156, 30);
-                    dropListIcon.frame = CGRectMake(214, dropListIcon.frame.origin.y, 19, 32);
-                }
-                
-            } completion:^(BOOL finished){
-                
-                [UIView animateWithDuration:0.5 delay:0.3 options:0 animations:^{
-                    periodView.hidden = NO;
-                    
-                }completion:nil];
-              
-            }];
-        }else{
-            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                
-                if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
-                    reservationTypeBGView.frame = CGRectMake(15, reservationTypeBGView.frame.origin.y, 297, reservationTypeBGView.frame.size.height);
-                    reservationTypTxt.frame = CGRectMake(35, reservationTypTxt.frame.origin.y, 270, 30);
-                    dropListIcon.frame = CGRectMake(8, dropListIcon.frame.origin.y, 19, 32);
-                }else if (IS_IPHONE_6){
-                    reservationTypeBGView.frame = CGRectMake(18, reservationTypeBGView.frame.origin.y, 350, reservationTypeBGView.frame.size.height);
-                    reservationTypTxt.frame = CGRectMake(42, reservationTypTxt.frame.origin.y, 318, 30);
-                    dropListIcon.frame = CGRectMake(8, dropListIcon.frame.origin.y, 19, 32);
-                }else if (IS_IPHONE_6P){
-                    reservationTypeBGView.frame = CGRectMake(20, reservationTypeBGView.frame.origin.y, 386, reservationTypeBGView.frame.size.height);
-                    reservationTypTxt.frame = CGRectMake(46, reservationTypTxt.frame.origin.y, 353, 30);
-                    dropListIcon.frame = CGRectMake(8, dropListIcon.frame.origin.y, 19, 32);
-                }
-                
-            } completion:^(BOOL finished){
-                
-                [UIView animateWithDuration:0.5 delay:0.3 options:0 animations:^{
-                    periodView.hidden = YES;
-                    
-                }completion:nil];
-                
-            }];
-        }
-        
-        toDateView.hidden = YES;
-        if(row == 2)
-        {
-            toDate = [NSDate date];
-            toDateView.hidden = NO;
-        }
-    }
-    else if (periodSelected)
-    {
-        periodTxt.text = periodData[row];
-        TimePeriod     = periodMapData[row];
-    }
+    cityTxt.text = cities[row];
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    NSString *title ;
-    
-    if (citySelected)
-    {
-        title = cities[row];
-    }
-    else if (reservationSelected)
-    {
-       title = resevationData[row];
-    }
-    else if (periodSelected)
-    {
-        title = periodData[row];
-    }
-    return title ;
-}
-
-#pragma mark - THDatePickerDelegate
-
-- (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
-    [self setDate:self.datePickr.date];
-    //[self.datePicker slideDownAndOut];
-    [self dismissSemiModalView];
-}
-
-- (void)datePickerCancelPressed:(THDatePickerViewController *)datePicker {
-    //[self.datePicker slideDownAndOut];
-    [self dismissSemiModalView];
-}
-
-- (void)datePicker:(THDatePickerViewController *)datePicker selectedDate:(NSDate *)selectedDate {
-    NSLog(@"Date selected: %@",[_formatter stringFromDate:selectedDate]);
+    return cities[row] ;
 }
 
 - (void)didReceiveMemoryWarning
@@ -779,13 +498,13 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

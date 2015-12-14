@@ -12,6 +12,9 @@
 #import "SmallIconViewCell.h"
 #import "SearchResult.h"
 #import "SearchDetailsViewController.h"
+#import "FacilityModel.h"
+#import "FacilityCell.h"
+
 @interface ResultViewController () <UIPickerViewDataSource,UIPickerViewDelegate,BookingDelegate,DatabaseDelegate,DatabaseRowDelegate>
 {
     __weak IBOutlet UITableView *loungeList ;
@@ -30,8 +33,6 @@
     //Advanced search
     float animatedDistance ;
     __weak IBOutlet UITextField *cityTxt;
-    __weak IBOutlet UITextField *priceFrom;
-    __weak IBOutlet UITextField *priceTo;
     __weak IBOutlet UITextField *reservationTypTxt;
     __weak IBOutlet UITextField *periodTxt;
     __weak IBOutlet UIView      *periodView;
@@ -73,23 +74,25 @@
     BOOL roomSelected;
     BOOL arrangeSelected ;
     
-    //search post parameters
-//    SearchParaData *searchData ;
     NSString *startDate ;
     NSString *endDate ;
     NSString *Type;
     NSString *TimePeriod;
     
-//    NSString *startDate ;
-//    NSString *endDate ;
-//    NSString *Type;
-//    NSString *TimePeriod;
-    
-//    UIToolbar *toolBar ;
     UILabel *toolBarTitle ;
+    
+    BOOL isLastPage ;
+    int lastPageIndex ;
+    BOOL readFromAdvancedSearch;
+    
+    __weak IBOutlet UITableView *facilitiesList ;
+    __weak IBOutlet UILabel *noSearchResult;
 }
 
 @property (strong, nonatomic) PBWebViewController *webViewController;
+@property (strong, nonatomic) NSMutableArray *facilities;
+@property (strong, nonatomic) NSMutableArray *selectedFacilities;
+@property (weak  , nonatomic) IBOutlet UIButton *advancedSearchBtn;
 
 @end
 
@@ -107,6 +110,121 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    cities = [NSArray new];
+    self.Lounges = [NSMutableArray new];
+    self.selectedFacilities = [NSMutableArray new];
+    
+    resevationData = @[@"نصف يوم",@"يوم واحد",@"أكثر من يوم"];
+    periodData     = @[@"صباحا",@"مساء"];
+    periodMapData  = @[@"Morning",@"Evening"];
+    roomsCount     = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"+10"];
+    sortingData    = @[@"الأحدث",@"الأسعار(الأقل إلي الأعلي)",@"الأسعار(الأعلي إلي الأقل)"];
+    sortingMapData = @[@"Popular",@"Price_Low",@"Price_High"];
+    
+    [self configureUI];
+    
+    [self configureData];
+    
+    [self getAllFacilities];
+    
+    [self nextPage];
+}
+
+- (void)getAllFacilities
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [hud setLabelText:@""];
+    
+    [[WebDataRepository sharedInstance]getFacilities:^(id result)
+    {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        NSDictionary *dic = result;
+       
+        NSArray * facilitiesArray = [dic objectForKey:@"Data"];
+      
+        self.facilities = [NSMutableArray new];
+        
+        [facilitiesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
+         {
+             NSDictionary* item = obj;
+             [self.facilities addObject:[[FacilityModel alloc] initWithDictionary:item]];
+         }];
+
+        [facilitiesList reloadData];
+        
+        facilitiesList.frame = CGRectMake(facilitiesList.frame.origin.x, facilitiesList.frame.origin.y, facilitiesList.frame.size.width, 39.0f *self.facilities.count);
+        
+        self.advancedSearchBtn.frame = CGRectMake(self.advancedSearchBtn.frame.origin.x, facilitiesList.frame.origin.y + facilitiesList.frame.size.height + 14.0f, self.advancedSearchBtn.frame.size.width, self.advancedSearchBtn.frame.size.height);
+        
+        [contentView setContentSize:CGSizeMake(contentView.frame.size.width, self.advancedSearchBtn.frame.origin.y + 120.0f)];
+
+    } andFailure:^(NSString *message){
+        NSLog(@"%@",message);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
+- (void)configureData
+{
+    lastPageIndex = 1 ;
+    isLastPage = NO ;
+    readFromAdvancedSearch = NO ;
+    
+    if (self.searchParaData.Singles != nil)
+    {
+        youthBtn.selected = YES ;
+    }
+    else if (self.searchParaData.Family != nil)
+    {
+        familyBtn.selected = YES ;
+    }
+    else if (self.searchParaData.Events != nil)
+    {
+        eventBtn.selected = YES ;
+    }
+
+    //Setting Previous search para values
+    startDate   = self.searchParaData.DateFrom;
+    endDate     = self.searchParaData.DateTo;
+    Type        = self.searchParaData.Type;
+    TimePeriod  = self.searchParaData.Time;
+    sortingKind = self.searchParaData.SortBy;
+    
+    fromDateSelected = YES ;
+    [self setDate:self.startFromDate];
+    
+    int x = [Type intValue];
+    if (x == 2)
+    {
+        toDateView.hidden = NO ;
+        secondDateHeader.hidden = NO ;
+        fromDateSelected = NO ;
+        [self setDate:self.endToDate];
+        fromDateSelected = YES ;
+    }
+    
+    reservationTypTxt.text = resevationData[x];
+    if (TimePeriod.length > 0)
+    {
+        periodView.hidden = NO ;
+        if ([TimePeriod isEqualToString:@"Morning"])
+        {
+            periodTxt.text  = @"صباحا";
+        }
+        else if([TimePeriod isEqualToString:@"Evening"])
+        {
+            periodTxt.text  = @"مساء";
+        }
+    }
+}
+
+- (void)configureUI
+{
+    facilitiesList.tag = 20 ;
+    facilitiesList.allowsMultipleSelection = YES;
+    
     dataPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 700,self.view.frame.size.width , 206.0f)];
     dataPicker.dataSource = self;
     dataPicker.delegate = self;
@@ -118,41 +236,38 @@
     [toolBar setBarStyle:UIBarStyleDefault];
     [toolBar setTintColor:[UIColor whiteColor]];
     [toolBar setBarTintColor:RGBA(47, 120, 143, 1)];
-    UIBarButtonItem *barButtonDone = [[UIBarButtonItem alloc] initWithTitle:@"تم" style:UIBarButtonItemStylePlain target:self action:@selector(setPickerData:)];
     
+    UIBarButtonItem *barButtonDone = [[UIBarButtonItem alloc] initWithTitle:@"تم" style:UIBarButtonItemStylePlain target:self action:@selector(setPickerData:)];
     toolBarTitle = [[UILabel alloc] initWithFrame:CGRectMake(50, 55, 200, 20)];
     toolBarTitle.backgroundColor = [UIColor clearColor];
     toolBarTitle.textColor = [UIColor whiteColor];
     [toolBarTitle setFont:[UIFont fontWithName:@"JFFlat-Regular" size:16.0]];
     toolBarTitle.textAlignment = NSTextAlignmentCenter;
-   
+    
     UIBarButtonItem *typeField = [[UIBarButtonItem alloc] initWithCustomView:toolBarTitle];
     UIBarButtonItem *fixedItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     fixedItem.width = (self.view.frame.size.width - 240.0f) / 2.0f;
-    if (IS_IPHONE_6) {
+    
+    if (IS_IPHONE_6)
+    {
         fixedItem.width = (self.view.frame.size.width - 200.0f) / 2.0f;
-    }else if (IS_IPHONE_6P){
+    }
+    else if (IS_IPHONE_6P){
         fixedItem.width = (self.view.frame.size.width - 160.0f) / 2.0f;
     }
+    
     toolBarTitle.text = @"الترتيب";
     toolBar.items = @[barButtonDone,fixedItem,typeField];
-    
     
     arrangeTxt.inputView = dataPicker ;
     arrangeTxt.inputAccessoryView = toolBar;
     
     cityTxt.inputView = dataPicker ;
     cityTxt.inputAccessoryView = toolBar;
-
-//    priceFrom.inputView = dataPicker;
-    priceFrom.inputAccessoryView = toolBar ;
-    
-//    priceTo.inputView = dataPicker;
-    priceTo.inputAccessoryView = toolBar ;
     
     reservationTypTxt.inputView = dataPicker ;
     reservationTypTxt.inputAccessoryView = toolBar;
-
+    
     periodTxt.inputView = dataPicker;
     periodTxt.inputAccessoryView = toolBar;
     
@@ -167,93 +282,15 @@
     
     livingRoom.inputView = dataPicker;
     livingRoom.inputAccessoryView = toolBar;
-
+    
     space.inputView = dataPicker;
     space.inputAccessoryView = toolBar;
-    
-    
-    sortingData    = @[@"الأحدث",@"الأسعار(الأقل إلي الأعلي)",@"الأسعار(الأعلي إلي الأقل)"];
-    sortingMapData = @[@"Popular",@"Price_Low",@"Price_High"];
     
     [arrangeBtn setTitle:@"الأحدث" forState:UIControlStateNormal];
     
     searchResultCount.text = [NSString stringWithFormat:@"نتائج البحث %lu",(unsigned long)_Lounges.count];
     searchResultCount2.text = [NSString stringWithFormat:@"نتائج البحث %lu",(unsigned long)_Lounges.count];
 
-    if(IS_IPHONE_5)
-    {
-        [contentView setContentSize:CGSizeMake(contentView.frame.size.width, 609.0f)];
-    }
-    
-    if(IS_IPHONE_6)
-    {
-        [contentView setContentSize:CGSizeMake(contentView.frame.size.width, 600.0f)];
-    }
-    
-    if(IS_IPHONE_6P)
-    {
-        [contentView setContentSize:CGSizeMake(contentView.frame.size.width, 598.0f)];
-    }
-    
-    [youthBtn              setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [youthBtn              setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    [familyBtn             setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [familyBtn             setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    [eventBtn              setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [eventBtn              setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    [swimmingBoolBtn       setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [swimmingBoolBtn       setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    [swimmingBoolWomenBtn  setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [swimmingBoolWomenBtn  setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    [playGroundKidsBtn     setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [playGroundKidsBtn     setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    [seperationBtn         setBackgroundImage:[UIImage imageNamed:@"inactive-checkbox.png"] forState:UIControlStateNormal];
-    [seperationBtn         setBackgroundImage:[UIImage imageNamed:@"active-checkbox.png"]   forState:UIControlStateSelected];
-    
-    if (self.searchParaData.Singles != nil) {
-        youthBtn.selected = YES ;
-    }else if (self.searchParaData.Family != nil) {
-        familyBtn.selected = YES ;
-    }else if (self.searchParaData.Events != nil) {
-        eventBtn.selected = YES ;
-    }
-    
-    cities = [NSArray new];
-    
-    resevationData = @[@"نصف يوم",@"يوم واحد",@"أكثر من يوم"];
-    periodData     = @[@"صباحا",@"مساء"];
-    periodMapData  = @[@"Morning",@"Evening"];
-    roomsCount     = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"+10"];
-    //Setting Previous search para values
-    startDate   = self.searchParaData.DateFrom;
-    endDate     = self.searchParaData.DateTo;
-    Type        = self.searchParaData.Type;
-    TimePeriod  = self.searchParaData.Time;
-
-    
-    fromDateSelected = YES ;
-    [self setDate:self.startFromDate];
-    
-    int x = [Type intValue];
-    if (x == 2) {
-        toDateView.hidden = NO ;
-        secondDateHeader.hidden = NO ;
-        fromDateSelected = NO ;
-        [self setDate:self.endToDate];
-        fromDateSelected = YES ;
-    }
-    
-    reservationTypTxt.text = resevationData[x];
-    if (TimePeriod.length > 0)
-    {
-        periodView.hidden = NO ;
-        if ([TimePeriod isEqualToString:@"Morning"]) {
-            periodTxt.text  = @"صباحا";
-        }else if([TimePeriod isEqualToString:@"Evening"]){
-            periodTxt.text  = @"مساء";
-        }
-    }
-    
     UITapGestureRecognizer *tapGuesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setFromDatePicker)];
     tapGuesture.numberOfTapsRequired = 1;
     [fromDateView addGestureRecognizer:tapGuesture];
@@ -384,34 +421,35 @@
 {
     if ([arrangeTxt isFirstResponder]) {
         
+        [self.Lounges removeAllObjects];
         self.searchParaData.SortBy = sortingKind;
         
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//        
+//        [hud setLabelText:@""];
+//        
+//        [[WebDataRepository sharedInstance] searchForLounge:self.searchParaData :^(id result) {
+//            
+//            SearchResult *response = [SearchResult modelFromJSONDictionary:result];
         
-        [hud setLabelText:@""];
+//            NSArray *resultArray = [NSArray new];
+//            
+//            if (response.Data != nil)
+//            {
+//                resultArray = response.Data ;
+//            }
+            [self nextPage];
+//            self.Lounges = resultArray ;
         
-        [[WebDataRepository sharedInstance] searchForLounge:self.searchParaData :^(id result) {
-            
-            SearchResult *response = [SearchResult modelFromJSONDictionary:result];
-            
-            NSArray *resultArray = [NSArray new];
-            
-            if (response.Data != nil)
-            {
-                resultArray = response.Data ;
-            }
-            
-            self.Lounges = resultArray ;
-            
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            
-            [loungeList reloadData];
-            
-        } andFailure:^(NSString *message) {
-            
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            
-        }];
+//            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+//            [loungeList reloadData];
+        
+//        } andFailure:^(NSString *message) {
+//            
+//            [MBProgressHUD hideHUDForView:self.view animated:YES];
+//            
+//        }];
         
     }else if ([cityTxt isFirstResponder]) {
         if (cityTxt.text.length == 0) {
@@ -430,45 +468,95 @@
     [self.view endEditing:YES];
 }
 
-//- (void)popViewController:(id)sender
-//{
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
-
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.Lounges.count ;
+    if (tableView.tag == 20)
+    {
+        return self.facilities.count ;
+    } else {
+        return self.Lounges.count ;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier  = @"LoungeCell";
+    static NSString *CellIdentifier2  = @"FacilityCell";
     
-    LoungeCell *cell = (LoungeCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil)
-    {
-        cell = (LoungeCell *)[[[NSBundle mainBundle] loadNibNamed:@"LoungeCell" owner:nil options:nil] objectAtIndex:0];
-    }
-    
-    SearchData *result = _Lounges[indexPath.row];
-  
-    cell.delegate = self;
-    [cell setLoungeData:result];
+    LoungeCell *cell        = (LoungeCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    FacilityCell *cell2     = (FacilityCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
 
-    return cell;
+    if (tableView.tag == 20)
+    {
+        if (cell2 == nil)
+        {
+            cell2 = (FacilityCell *)[[[NSBundle mainBundle] loadNibNamed:@"FacilityCell" owner:nil options:nil] objectAtIndex:0];
+        }
+        
+        FacilityModel *model = _facilities[indexPath.row];
+        
+        if ([self.selectedFacilities containsObject:model.ID])
+        {
+            cell2.checkMarkImage.image = [UIImage imageNamed:@"active-checkbox.png"];
+        }
+        else
+        {
+            cell2.checkMarkImage.image = [UIImage imageNamed:@"inactive-checkbox.png"];
+        }
+        
+        cell2.facilityTitle.text = model.type ;
+        return cell2;
+    
+    }else{
+        
+        if (cell == nil)
+        {
+            cell = (LoungeCell *)[[[NSBundle mainBundle] loadNibNamed:@"LoungeCell" owner:nil options:nil] objectAtIndex:0];
+        }
+        
+        SearchData *result = _Lounges[indexPath.row];
+        
+        cell.delegate = self;
+        [cell setLoungeData:result];
+        
+        return cell;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == self.Lounges.count - 1 && !isLastPage)
+    {
+        lastPageIndex++ ;
+        [self nextPage];
+    }
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    SearchData *result = _Lounges[indexPath.row];
-    SearchDetailsViewController *searchDetail = [[SearchDetailsViewController alloc]initWithNibName:@"SearchDetailsViewController" bundle:[NSBundle mainBundle]];
-    searchDetail.istrahaID = [NSString stringWithFormat:@"%i",result.IstrahaID];
-    [self.navigationController pushViewController:searchDetail animated:YES];
+    if (tableView.tag == 20)
+    {
+        FacilityModel *model = self.facilities[indexPath.row];
+        if ([self.selectedFacilities containsObject:model.ID])
+        {
+            [self.selectedFacilities removeObject:model.ID];
+        }else{
+            [self.selectedFacilities addObject:model.ID];
+        }
+        
+        [facilitiesList reloadData];
+    }
+    else
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        SearchData *result = _Lounges[indexPath.row];
+        SearchDetailsViewController *searchDetail = [[SearchDetailsViewController alloc]initWithNibName:@"SearchDetailsViewController" bundle:[NSBundle mainBundle]];
+        searchDetail.istrahaID = [NSString stringWithFormat:@"%i",result.IstrahaID];
+        [self.navigationController pushViewController:searchDetail animated:YES];
+    }
 }
 
 #pragma mark - PickerViewDatasource
@@ -504,10 +592,8 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    
     if (citySelected)
     {
-        
         cityTxt.text = cities[row];
     }
     else if (reservationSelected)
@@ -539,7 +625,9 @@
     }
     else if (arrangeSelected)
     {
-    
+        lastPageIndex = 1 ;
+        isLastPage = NO ;
+        
         [arrangeBtn setTitle:sortingData[row] forState:UIControlStateNormal];
         sortingKind = sortingMapData[row];
    
@@ -837,7 +925,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
     }
 }
 
-- (IBAction)arrangeResult:(id)sender {
+- (IBAction)arrangeResult:(id)sender
+{
     [arrangeTxt becomeFirstResponder];
 }
 
@@ -872,6 +961,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
 
 - (IBAction)advancedSearchAction:(id)sender
 {
+    isLastPage = NO ;
+    lastPageIndex = 1 ;
+    readFromAdvancedSearch = YES ;
+    [self.Lounges removeAllObjects];
+    
     [UIView animateWithDuration:0.5f animations:^{
         
     } completion:^(BOOL finished) {
@@ -895,158 +989,195 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 140;
             
         } completion:^(BOOL finished) {
             
-            if(![Validation validCountry:cityTxt.text])
-            {
-                return ;
-            }
+            [self nextPage];
             
-            if(![Validation validFromDate:startDate])
-            {
-                return ;
-            }
-            if (endDate.length == 0) {
-                endDate = startDate ;
-            }
-            
-            if(![Validation validReservationType:Type])
-            {
-                return ;
-            }
-            
-            if ([Type isEqualToString:@"0"])
-            {
-                self.searchParaData.HalfDay = true ;
-                
-                if(![Validation validTime:TimePeriod])
-                {
-                    return ;
-                }
-            }else{
-                self.searchParaData.HalfDay = false ;
-            }
-            
-            self.searchParaData.City = cityTxt.text;
-            self.searchParaData.DateFrom = startDate ;
-            self.searchParaData.DateTo = endDate ;
-            self.searchParaData.Type = Type ;
-            self.searchParaData.Time = TimePeriod;
-            self.searchParaData.Page = 1;
-            self.searchParaData.SortBy = sortingKind;
-            
-            if (youthBtn.selected)
-            {
-                self.searchParaData.Singles = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.Singles = NULL ;
-            }
-            
-            if (familyBtn.selected)
-            {
-                self.searchParaData.Family = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.Family = NULL ;
-            }
-            
-            if (eventBtn.selected)
-            {
-                self.searchParaData.Events = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.Events = NULL ;
-            }
-            
-            if (swimmingBoolBtn.selected)
-            {
-                self.searchParaData.SwimmingPool = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.SwimmingPool = NULL ;
-            }
-            
-            if (swimmingBoolWomenBtn.selected)
-            {
-                self.searchParaData.WomenSwimming = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.WomenSwimming = NULL ;
-            }
-            
-            if (playGroundKidsBtn.selected)
-            {
-                self.searchParaData.KidsPlay = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.KidsPlay = NULL ;
-            }
-            
-            if (seperationBtn.selected)
-            {
-                self.searchParaData.Seperation = [NSNumber numberWithBool:YES]; ;
-            }else{
-                self.searchParaData.Seperation = NULL ;
-            }
-
-            if (bedRooms.text.length > 0)
-            {
-                self.searchParaData.Bedrooms  = [NSNumber numberWithInt:[bedRooms.text intValue]];
-            }else{
-                self.searchParaData.Bedrooms  = NULL ;
-            }
-         
-            if (livingRoom.text.length > 0)
-            {
-                self.searchParaData.Livingrooms  = [NSNumber numberWithInt:[livingRoom.text intValue]];
-            }else{
-                self.searchParaData.Livingrooms  = NULL ;
-            }
-            
-            if (pathRooms.text.length > 0)
-            {
-                self.searchParaData.Bathrooms  = [NSNumber numberWithInt:[pathRooms.text intValue]];
-            }else{
-                self.searchParaData.Bathrooms  = NULL ;
-            }
-            
-            if (kitchenRoom.text.length > 0)
-            {
-                self.searchParaData.Kitchens  = [NSNumber numberWithInt:[kitchenRoom.text intValue]];
-            }else{
-                self.searchParaData.Kitchens   = NULL ;
-            }
-            
-            if (space.text.length > 0)
-            {
-                self.searchParaData.Space  = [NSNumber numberWithDouble:[space.text doubleValue]];
-            }else{
-                self.searchParaData.Space  = NULL ;
-            }
-            
-            
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            
-            [hud setLabelText:@""];
-            
-            [[WebDataRepository sharedInstance] searchForLounge:self.searchParaData :^(id result) {
-                
-                SearchResult *response = [SearchResult modelFromJSONDictionary:result];
-                
-                NSArray *resultArray = [NSArray new];
-                
-                if (response.Data != nil)
-                {
-                    resultArray = response.Data ;
-                }
-                
-                self.Lounges = resultArray ;
-                
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                
-                [loungeList reloadData];
-                
-            } andFailure:^(NSString *message) {
-                
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                
-            }];
         }];
     }];
 }
+
+- (void)nextPage
+{
+    if (readFromAdvancedSearch)
+    {
+        readFromAdvancedSearch = NO ;
+        
+        if(![Validation validCountry:cityTxt.text])
+        {
+            return ;
+        }
+        
+        if(![Validation validFromDate:startDate])
+        {
+            return ;
+        }
+        if (endDate.length == 0) {
+            endDate = startDate ;
+        }
+        
+        if(![Validation validReservationType:Type])
+        {
+            return ;
+        }
+        
+        if ([Type isEqualToString:@"0"])
+        {
+            self.searchParaData.HalfDay = true ;
+            
+            if(![Validation validTime:TimePeriod])
+            {
+                return ;
+            }
+        }else{
+            self.searchParaData.HalfDay = false ;
+        }
+        
+        self.searchParaData.City = cityTxt.text;
+        self.searchParaData.DateFrom = startDate ;
+        self.searchParaData.DateTo = endDate ;
+        self.searchParaData.Type = Type ;
+        self.searchParaData.Time = TimePeriod;
+        self.searchParaData.Page = lastPageIndex;
+        self.searchParaData.SortBy = sortingKind;
+        
+        if (youthBtn.selected)
+        {
+            self.searchParaData.Singles = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.Singles = NULL ;
+        }
+        
+        if (familyBtn.selected)
+        {
+            self.searchParaData.Family = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.Family = NULL ;
+        }
+        
+        if (eventBtn.selected)
+        {
+            self.searchParaData.Events = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.Events = NULL ;
+        }
+        
+        if (swimmingBoolBtn.selected)
+        {
+            self.searchParaData.SwimmingPool = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.SwimmingPool = NULL ;
+        }
+        
+        if (swimmingBoolWomenBtn.selected)
+        {
+            self.searchParaData.WomenSwimming = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.WomenSwimming = NULL ;
+        }
+        
+        if (playGroundKidsBtn.selected)
+        {
+            self.searchParaData.KidsPlay = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.KidsPlay = NULL ;
+        }
+        
+        if (seperationBtn.selected)
+        {
+            self.searchParaData.Seperation = [NSNumber numberWithBool:YES]; ;
+        }else{
+            self.searchParaData.Seperation = NULL ;
+        }
+        
+        if (bedRooms.text.length > 0)
+        {
+            self.searchParaData.Bedrooms  = [NSNumber numberWithInt:[bedRooms.text intValue]];
+        }else{
+            self.searchParaData.Bedrooms  = NULL ;
+        }
+        
+        if (livingRoom.text.length > 0)
+        {
+            self.searchParaData.Livingrooms  = [NSNumber numberWithInt:[livingRoom.text intValue]];
+        }else{
+            self.searchParaData.Livingrooms  = NULL ;
+        }
+        
+        if (pathRooms.text.length > 0)
+        {
+            self.searchParaData.Bathrooms  = [NSNumber numberWithInt:[pathRooms.text intValue]];
+        }else{
+            self.searchParaData.Bathrooms  = NULL ;
+        }
+        
+        if (kitchenRoom.text.length > 0)
+        {
+            self.searchParaData.Kitchens  = [NSNumber numberWithInt:[kitchenRoom.text intValue]];
+        }else{
+            self.searchParaData.Kitchens   = NULL ;
+        }
+        
+        if (space.text.length > 0)
+        {
+            self.searchParaData.Space  = [NSNumber numberWithDouble:[space.text doubleValue]];
+        }else{
+            self.searchParaData.Space  = NULL ;
+        }
+
+    }else{
+        self.searchParaData.Page = lastPageIndex ;
+    }
+
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [hud setLabelText:@""];
+    
+    [[WebDataRepository sharedInstance] searchForLounge:self.searchParaData :^(id result) {
+        
+        SearchResult *response = [SearchResult modelFromJSONDictionary:result];
+        
+        NSArray *resultArray = [NSArray new];
+        
+        if (response.Data != nil)
+        {
+            resultArray = response.Data ;
+        }
+        
+        if (resultArray.count == 0)
+        {
+            isLastPage = YES ;
+        }
+       
+        NSRange range = NSMakeRange([self.Lounges count],resultArray.count);
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+        [self.Lounges insertObjects:resultArray atIndexes:indexSet];
+        if (self.Lounges.count)
+        {
+            noSearchResult.hidden = NO ;
+        }
+        else
+        {
+           noSearchResult.hidden = NO ;
+        }
+        
+        [loungeList reloadData];
+        
+        searchResultCount.text = [NSString stringWithFormat:@"نتائج البحث %lu",(unsigned long)_Lounges.count];
+        searchResultCount2.text = [NSString stringWithFormat:@"نتائج البحث %lu",(unsigned long)_Lounges.count];
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        [loungeList reloadData];
+        
+    } andFailure:^(NSString *message) {
+        
+        isLastPage = NO ;
+        if (lastPageIndex < 1) {
+            lastPageIndex--;
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
 
 - (IBAction)SelectType:(id)sender
 {

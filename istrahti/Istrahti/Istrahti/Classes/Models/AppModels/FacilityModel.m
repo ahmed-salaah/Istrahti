@@ -9,9 +9,13 @@
 #import "FacilityModel.h"
 
 @implementation FacilityModel
--(id)initWithDic:(NSDictionary *)dic{
+
+- (id)initWithDictionary:(NSDictionary *)dic
+{
+    self.ID = [dic jsonObjectForKey:@"ID"];
     self.imgUrl = [dic jsonObjectForKey:@"Icon"];
     self.type = [dic jsonObjectForKey:@"Name"];
     return self;
+
 }
 @end

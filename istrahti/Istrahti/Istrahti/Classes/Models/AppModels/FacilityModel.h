@@ -10,7 +10,11 @@
 #import "NSDictionary+ReplacingNull.h"
 
 @interface FacilityModel : NSObject
-@property (nonatomic, strong)NSString* imgUrl;
-@property (nonatomic, strong)NSString* type;
--(id)initWithDic:(NSDictionary *)dic;
+
+@property (nonatomic, strong) NSString *ID;
+@property (nonatomic, strong) NSString* imgUrl;
+@property (nonatomic, strong) NSString* type;
+
+-(id)initWithDictionary:(NSDictionary *)dic;
+
 @end
